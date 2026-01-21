@@ -1,9 +1,30 @@
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Briefcase, CheckCircle2, TrendingUp } from "lucide-react";
 import Link from "next/link";
 import HeroImages from "@/components/HeroImages";
 
 const Home = () => {
+  const featureText = [
+    {
+      title: "Organize Applications",
+      icon: <Briefcase className="text-primary h-6 w-6" />,
+      description:
+        "Create custom boards and columns to track your job applications at every stage of the process.",
+    },
+    {
+      title: "Track Progress",
+      icon: <TrendingUp className="text-primary h-6 w-6" />,
+      description:
+        "Monitor your application status from applied to interview to offer with visual Kanban boards.",
+    },
+    {
+      title: "Stay Organized",
+      icon: <CheckCircle2 className="text-primary h-6 w-6" />,
+      description:
+        "SNever lose track of an application. Keep all your job search information in one centralized place.",
+    },
+  ];
+
   return (
     <div className="flex min-h-screen flex-col bg-white">
       <main className="flex-1">
@@ -31,6 +52,28 @@ const Home = () => {
 
         {/* hero images */}
         <HeroImages />
+
+        {/* feature section */}
+        <section className="container mx-auto  py-24 border-t border-gray-200">
+          <div className="container px-4 mx-auto">
+            <div className="grid gap-12 md:grid-cols-3">
+              {featureText.map(({ title, icon, description }) => (
+                <div
+                  key={title}
+                  className="flex flex-col items-start gap-4 flex-1"
+                >
+                  <div className="h-12 w-12 flex justify-center items-center bg-primary/10 rounded-lg">
+                    {icon}
+                  </div>
+                  <h2 className="text-2xl font-semibold ">{title}</h2>
+                  <p className="max-w-md text-muted-foreground">
+                    {description}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
       </main>
     </div>
   );
