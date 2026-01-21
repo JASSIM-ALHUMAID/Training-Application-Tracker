@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
+import HeroImages from "@/components/HeroImages";
 
 const Home = () => {
   return (
@@ -27,6 +28,9 @@ const Home = () => {
             </div>
           </div>
         </section>
+
+        {/* hero images */}
+        <HeroImages />
       </main>
     </div>
   );
