@@ -38,11 +38,11 @@ const SignIn = () => {
       });
 
       if (result.error) {
-        setError(result.error.message ?? "Failed to sign up");
+        setError(result.error.message ?? "Failed to sign in");
       } else {
         router.push("/dashboard");
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred");
     } finally {
       setIsLoading(false);
@@ -100,11 +100,11 @@ const SignIn = () => {
             <Button disabled={isLoading} type="submit" className="w-full">
               {isLoading ? "Signing In..." : "Sign In"}
             </Button>
-            <p>
-              Don't have an Account?{" "}
-              <Link className="text-primary" href="/sign-up">
-                Sign Up
-              </Link>
+              <p>
+                Don&apos;t have an Account?{" "}
+                <Link className="text-primary" href="/sign-up">
+                  Sign Up
+                </Link>
             </p>
           </CardFooter>
         </form>

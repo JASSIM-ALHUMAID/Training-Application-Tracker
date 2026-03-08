@@ -9,19 +9,19 @@ const Home = () => {
       title: "Organize Applications",
       icon: <Briefcase className="text-primary h-6 w-6" />,
       description:
-        "Create custom boards and columns to track your job applications at every stage of the process.",
+        "Create custom boards and columns to track your training applications at every stage of the process.",
     },
     {
       title: "Track Progress",
       icon: <TrendingUp className="text-primary h-6 w-6" />,
       description:
-        "Monitor your application status from applied to interview to offer with visual Kanban boards.",
+        "Monitor your application status from submitted to review to acceptance with visual Kanban boards.",
     },
     {
       title: "Stay Organized",
       icon: <CheckCircle2 className="text-primary h-6 w-6" />,
       description:
-        "SNever lose track of an application. Keep all your job search information in one centralized place.",
+        "Never lose track of an application. Keep all your training application information in one centralized place.",
     },
   ];
 
@@ -32,10 +32,10 @@ const Home = () => {
         <section className="container mx-auto px-4 py-32">
           <div className="mx-auto max-w-4xl text-center">
             <h1 className="text-black mb-6 text-6xl font-bold ">
-              A better way to track your job application.
+              A better way to track your training applications.
             </h1>
             <p className="text-muted-foreground mb-10 text-xl">
-              Capture, organize, and manage your job search in one place.
+              Capture, organize, and manage your training applications in one place.
             </p>
             <div className="flex flex-col items-center gap-4">
               <Link href="/sign-up">

@@ -3,7 +3,6 @@
 import { Briefcase } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { getSession, signOut } from "@/lib/auth/auth";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -25,7 +24,7 @@ export default function NavBar() {
           className="flex items-center gap-2 text-xl font-semibold text-primary"
         >
           <Briefcase />
-          Job Tracker
+          Training Tracker
         </Link>
 
         <div className="flex items-center gap-4">

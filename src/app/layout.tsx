@@ -14,9 +14,9 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "job tracker app",
+  title: "training tracker app",
   description:
-    "A simple job application tracker built with Next.js and Tailwind CSS",
+    "A simple training application tracker built with Next.js and Tailwind CSS",
 };
 
 export default function RootLayout({
