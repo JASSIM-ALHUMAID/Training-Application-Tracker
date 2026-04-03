@@ -39,7 +39,7 @@ export async function signOut() {
     headers: await headers(),
   });
 
-  if (result) {
+  if (result.success) {
     redirect("/sign-in");
   }
 }
