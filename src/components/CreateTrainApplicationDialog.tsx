@@ -1,7 +1,15 @@
 "use client";
 
 import { Button } from "./ui/button";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "./ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "./ui/dialog";
 import { useState } from "react";
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
@@ -24,9 +32,12 @@ const INITIAL_FORM_DATA = {
   notes: "",
 };
 
-const CreateTrainApplicationDialog = ({ columnId, boardId }: CreateTrainApplicationDialogProps) => {
- const [open, setOpen] = useState<boolean>(false);
-const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+const CreateTrainApplicationDialog = ({
+  columnId,
+  boardId,
+}: CreateTrainApplicationDialogProps) => {
+  const [open, setOpen] = useState<boolean>(false);
+  const [formData, setFormData] = useState(INITIAL_FORM_DATA);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -67,7 +78,9 @@ const [formData, setFormData] = useState(INITIAL_FORM_DATA);
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>Add Training Application</DialogTitle>
-          <DialogDescription>Track a new training application</DialogDescription>
+          <DialogDescription>
+            Track a new training application
+          </DialogDescription>
         </DialogHeader>
         <form className="space-y-4" onSubmit={handleSubmit}>
           <div className="space-y-4">
@@ -180,6 +193,6 @@ const [formData, setFormData] = useState(INITIAL_FORM_DATA);
       </DialogContent>
     </Dialog>
   );
-}
+};
 
-export default CreateTrainApplicationDialog
+export default CreateTrainApplicationDialog;
