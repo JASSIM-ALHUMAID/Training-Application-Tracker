@@ -38,11 +38,13 @@ const CreateTrainApplicationDialog = ({
 }: CreateTrainApplicationDialogProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
 
     try {
+      setIsSubmitting(true);
       const result = await createTrainApplication({
         ...formData,
         columnId,
@@ -61,6 +63,8 @@ const CreateTrainApplicationDialog = ({
       }
     } catch (err) {
       console.error(err);
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -187,7 +191,9 @@ const CreateTrainApplicationDialog = ({
             >
               Cancel
             </Button>
-            <Button type="submit">Add Application</Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Adding..." : "Add Application"}
+            </Button>
           </DialogFooter>
         </form>
       </DialogContent>

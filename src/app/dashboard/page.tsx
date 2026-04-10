@@ -18,6 +18,9 @@ const DashBoard = async () => {
     name: "Train Hunt",
   }).populate({
     path: "columns",
+    populate: {
+      path: "trainApplications",
+    },
   });
 
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { Board, Column } from "@/lib/models/models.types";
+import { Board, Column, trainApplications } from "@/lib/models/models.types";
 import React from "react";
 import {
   Calendar,
@@ -20,6 +20,8 @@ import {
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
 import CreateTrainApplicationDialog from "./CreateTrainApplicationDialog";
+import TrainApplication from "@/lib/models/train-application";
+import TrainApplicationCard from "./TrainApplicationCard";
 
 interface KanbanBoardProps {
   board: Board;
@@ -57,12 +59,16 @@ function DroppableColumn({
   col,
   config,
   boardId,
+  sortedColumns,
 }: {
   col: Column;
   config: ColConfig;
   boardId: string;
+  sortedColumns: Column[];
 }) {
-  console.log(col);
+  const sortedApplications =
+    [...col.trainApplications].sort((a, b) => a.order - b.order) || [];
+
   return (
     <Card className="min-w-[300px] shrink-0 shadow-md p-0">
       <CardHeader
@@ -94,20 +100,43 @@ function DroppableColumn({
           </DropdownMenu>
         </div>
       </CardHeader>
+
       <CardContent className="space-y-2 pt-4 bg-gray-50/50 min-h-[400px] rounded-b-lg">
+        {sortedApplications.map((app, key) => (
+          <ApplicationCard
+            key={key}
+            applications={{ ...app, columnId: app.columnId || col._id }}
+            columns={sortedColumns}
+          />
+        ))}
         <CreateTrainApplicationDialog columnId={col._id} boardId={boardId} />
       </CardContent>
     </Card>
   );
 }
 
+function ApplicationCard({
+  applications,
+  columns,
+}: {
+  applications: trainApplications;
+  columns: Column[];
+}) {
+  return (
+    <div>
+      <TrainApplicationCard application={applications} columns={columns} />
+    </div>
+  );
+}
+
 const KanbanBoard = ({ board, userId }: KanbanBoardProps) => {
   const columns = board.columns;
+  const sortedColumns = [...columns].sort((a, b) => a.order - b.order);
 
   return (
     <div>
       <div>
-        {columns.map((col, Key) => {
+        {sortedColumns.map((col, Key) => {
           const config = COLUMN_CONFIG[Key] || {
             color: "bg-gray-500",
             icon: <Calendar className="h-4 w-4" />,
@@ -119,6 +148,7 @@ const KanbanBoard = ({ board, userId }: KanbanBoardProps) => {
                 col={col}
                 config={config}
                 boardId={board._id}
+                sortedColumns={columns}
               />
             </>
           );
