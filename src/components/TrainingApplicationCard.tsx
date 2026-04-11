@@ -21,21 +21,7 @@ import {
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-
-function handleMove(columnId: string) {
-  // TODO: Implement move logic
-  console.log("Moving to column:", columnId);
-}
-
-function handleSubmit(e: React.FormEvent) {
-  e.preventDefault();
-  // TODO: Implement submit logic
-}
-
-function handleDelete() {
-  // TODO: Implement delete logic
-  console.log("Deleting application");
-}
+import { updateApplication } from "@/lib/actions/training-application";
 
 const TrainingApplicationCard = ({
   application,
@@ -44,6 +30,7 @@ const TrainingApplicationCard = ({
   application: trainingApplications;
   columns: Column[];
 }) => {
+  const [isSaving, setIsSaving] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     company: application.company,
@@ -56,6 +43,37 @@ const TrainingApplicationCard = ({
     tags: application.tags?.join(", ") || "",
     description: application.description || "",
   });
+
+  async function handleMove(columnId: string) {
+    try {
+      const result = await updateApplication(application._id, { columnId });
+    } catch (error) {
+      console.error("Error moving application:", error);
+    }
+  }
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    try {
+      setIsSaving(true);
+      const result = await updateApplication(application._id, {
+        ...formData,
+        tags: formData.tags.split(",").map((tag) => tag.trim()),
+      });
+      if (!result.error) {
+        setIsEditing(false);
+      }
+    } catch (error) {
+      console.error("Error updating application:", error);
+    } finally {
+      setIsSaving(false);
+    }
+  }
+
+  function handleDelete() {
+    // TODO: Implement delete logic
+    console.log("Deleting application");
+  }
 
   return (
     <>
@@ -250,7 +268,9 @@ const TrainingApplicationCard = ({
               >
                 Cancel
               </Button>
-              <Button type="submit">Save Application</Button>
+              <Button type="submit" disabled={isSaving}>
+                {isSaving ? "Saving..." : "Save Application"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>

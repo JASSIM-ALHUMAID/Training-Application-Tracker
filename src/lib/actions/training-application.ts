@@ -111,8 +111,6 @@ export async function updateApplication(
     return { error: "Unauthorized" };
   }
 
-  await connectDB();
-
   const trainingApplication = await TrainingApplication.findById(id);
 
   if (!trainingApplication) {
@@ -123,7 +121,7 @@ export async function updateApplication(
   }
 
   const { columnId, order, ...otherUpdate } = updates;
-  const dataToUpdate: Partial<{
+  const updatedToApply: Partial<{
     company: string;
     position: string;
     location: string;
@@ -136,5 +134,105 @@ export async function updateApplication(
     columnId: string;
   }> = otherUpdate;
 
-  return { success: true };
+  const currentColumn = trainingApplication.columnId.toString();
+  const newColumnId = columnId?.toString();
+
+  const isMovingToDifferentColumn =
+    newColumnId && newColumnId !== currentColumn;
+
+  if (isMovingToDifferentColumn) {
+    // Remove from old column
+    await Column.findByIdAndUpdate(currentColumn, {
+      $pull: { trainingApplications: id },
+    });
+
+    const applicationInTargetColumn = await TrainingApplication.find({
+      _id: { $ne: id },
+      columnId: newColumnId,
+    })
+      .sort({ order: 1 })
+      .lean();
+
+    let newOrderValue: number;
+
+    if (order !== undefined && order !== null) {
+      newOrderValue = order * 100;
+
+      const applicationsToReorder = applicationInTargetColumn?.slice(order);
+      for (const app of applicationsToReorder || []) {
+        await TrainingApplication.findByIdAndUpdate(app._id, {
+          $set: { order: app.order + 100 },
+        });
+      }
+    } else {
+      if (applicationInTargetColumn?.length > 0) {
+        const lastOrder =
+          applicationInTargetColumn[applicationInTargetColumn.length - 1]
+            .order || 0;
+        newOrderValue = lastOrder + 100;
+      } else {
+        newOrderValue = 0;
+      }
+    }
+
+    updatedToApply.order = newOrderValue;
+    updatedToApply.columnId = newColumnId;
+
+    await Column.findByIdAndUpdate(newColumnId, {
+      $push: { trainingApplications: id },
+    });
+  } else if (order !== undefined && order !== null) {
+    const applicationInSameColumn = await TrainingApplication.find({
+      _id: { $ne: id },
+      columnId: currentColumn,
+    })
+      .sort({ order: 1 })
+      .lean();
+
+    const currentApplicationOrder = trainingApplication.order || 0;
+    const currentIndex = applicationInSameColumn.findIndex(
+      (app: any) => app.order > currentApplicationOrder,
+    );
+    const oldPositionIndex =
+      currentIndex === -1 ? applicationInSameColumn.length : currentIndex;
+
+    const newOrderValue = order * 100;
+
+    if (oldPositionIndex > order) {
+      const applicationsToShiftDown = applicationInSameColumn.slice(
+        order,
+        oldPositionIndex,
+      );
+      for (const app of applicationsToShiftDown) {
+        await TrainingApplication.findByIdAndUpdate(app._id, {
+          $set: { order: app.order + 100 },
+        });
+      }
+    } else if (order > oldPositionIndex) {
+      const applicationsToShiftUp = applicationInSameColumn.slice(
+        oldPositionIndex,
+        order,
+      );
+      for (const app of applicationsToShiftUp) {
+        const newOrder = Math.max(0, app.order - 100);
+        await TrainingApplication.findByIdAndUpdate(app._id, {
+          $set: { order: newOrder },
+        });
+      }
+    }
+
+    updatedToApply.order = newOrderValue;
+  }
+
+  const updated = await TrainingApplication.findByIdAndUpdate(
+    id,
+    updatedToApply,
+    {
+      new: true,
+    },
+  );
+
+  revalidatePath("/dashboard");
+
+  return { data: JSON.parse(JSON.stringify(updated)) };
 }
