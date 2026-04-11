@@ -12,11 +12,11 @@ async function getBoard(userId: string) {
 
   const boardDoc = await Board.findOne({
     userId: userId,
-    name: "Train Hunt",
+    name: "Training Tracker",
   }).populate({
     path: "columns",
     populate: {
-      path: "trainApplications",
+      path: "trainingApplications",
     },
   });
 
@@ -37,8 +37,8 @@ async function DashBoardPage() {
     <div className="min-h-screen bg-white">
       <div className="container mx-auto p-6">
         <div className="mb-6">
-          <h1 className="text-3xl font-bold text-black">Train Hunt</h1>
-          <p className="text-gray-600">Track your train applications</p>
+          <h1 className="text-3xl font-bold text-black">{board?.name || "Training Tracker"}</h1>
+          <p className="text-gray-600">Track your training applications</p>
         </div>
         <KanbanBoard board={board} userId={session.user.id} />
       </div>

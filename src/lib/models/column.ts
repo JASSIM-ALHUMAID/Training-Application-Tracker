@@ -4,12 +4,12 @@ export interface IColumn extends Document {
   name: string;
   boardId: mongoose.Types.ObjectId;
   order: number;
-  trainApplications: mongoose.Types.ObjectId[];
+  trainingApplications: mongoose.Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }
 
-// Board -> Columns -> TrainApplications
+// Board -> Columns -> TrainingApplications
 
 const ColumnSchema = new Schema<IColumn>(
   {
@@ -28,10 +28,10 @@ const ColumnSchema = new Schema<IColumn>(
       required: true,
       default: 0,
     },
-    trainApplications: [
+    trainingApplications: [
       {
         type: Schema.Types.ObjectId,
-        ref: "TrainApplication",
+        ref: "TrainingApplication",
       },
     ],
   },

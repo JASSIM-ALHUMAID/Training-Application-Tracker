@@ -1,4 +1,4 @@
-import { Column, trainApplications } from "@/lib/models/models.types";
+import { Column, trainingApplications } from "@/lib/models/models.types";
 import { Card, CardContent } from "./ui/card";
 import { ExternalLink } from "lucide-react";
 import {
@@ -12,7 +12,6 @@ import { MoreVertical, Edit2, Trash2, Plus } from "lucide-react";
 import { useState } from "react";
 import {
   Dialog,
-  DialogTrigger,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -31,7 +30,6 @@ function handleMove(columnId: string) {
 function handleSubmit(e: React.FormEvent) {
   e.preventDefault();
   // TODO: Implement submit logic
-  
 }
 
 function handleDelete() {
@@ -39,11 +37,11 @@ function handleDelete() {
   console.log("Deleting application");
 }
 
-const TrainApplicationCard = ({
+const TrainingApplicationCard = ({
   application,
   columns,
 }: {
-  application: trainApplications;
+  application: trainingApplications;
   columns: Column[];
 }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -261,4 +259,4 @@ const TrainApplicationCard = ({
   );
 };
 
-export default TrainApplicationCard;
+export default TrainingApplicationCard;

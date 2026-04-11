@@ -1,8 +1,7 @@
 import "./board";
 import "./column";
-import "./train-application";
+import "./training-application";
 
 export { default as Board } from "./board";
 export { default as Column } from "./column";
-export { default as TrainApplication } from "./train-application";
- 
+export { default as TrainingApplication } from "./training-application";

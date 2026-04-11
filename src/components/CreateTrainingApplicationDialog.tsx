@@ -15,9 +15,9 @@ import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
 import { Plus } from "lucide-react";
-import { createTrainApplication } from "@/lib/actions/train-application";
+import { createTrainingApplication } from "@/lib/actions/training-application";
 
-interface CreateTrainApplicationDialogProps {
+interface CreateTrainingApplicationDialogProps {
   columnId: string;
   boardId: string;
 }
@@ -32,10 +32,10 @@ const INITIAL_FORM_DATA = {
   notes: "",
 };
 
-const CreateTrainApplicationDialog = ({
+const CreateTrainingApplicationDialog = ({
   columnId,
   boardId,
-}: CreateTrainApplicationDialogProps) => {
+}: CreateTrainingApplicationDialogProps) => {
   const [open, setOpen] = useState<boolean>(false);
   const [formData, setFormData] = useState(INITIAL_FORM_DATA);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -45,7 +45,7 @@ const CreateTrainApplicationDialog = ({
 
     try {
       setIsSubmitting(true);
-      const result = await createTrainApplication({
+      const result = await createTrainingApplication({
         ...formData,
         columnId,
         boardId,
@@ -201,4 +201,4 @@ const CreateTrainApplicationDialog = ({
   );
 };
 
-export default CreateTrainApplicationDialog;
+export default CreateTrainingApplicationDialog;

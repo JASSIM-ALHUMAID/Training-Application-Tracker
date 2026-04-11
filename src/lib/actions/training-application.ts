@@ -2,10 +2,10 @@
 
 import { getSession } from "@/lib/auth/auth";
 import connectDB from "../db";
-import { Board, Column, TrainApplication } from "../models";
+import { Board, Column, TrainingApplication } from "../models";
 import { revalidatePath } from "next/cache";
 
-interface CreateTrainApplicationParams {
+interface CreateTrainingApplicationParams {
   company: string;
   position: string;
   location?: string;
@@ -18,8 +18,8 @@ interface CreateTrainApplicationParams {
   boardId: string;
 }
 
-export async function createTrainApplication(
-  data: CreateTrainApplicationParams,
+export async function createTrainingApplication(
+  data: CreateTrainingApplicationParams,
 ) {
   const session = await getSession();
 
@@ -58,14 +58,14 @@ export async function createTrainApplication(
   }
 
   // get the last order number for this column
-  const maxOrder = await TrainApplication.findOne({ columnId })
+  const maxOrder = await TrainingApplication.findOne({ columnId })
     .sort({ order: -1 })
     .select("order")
     .lean();
 
   const order = maxOrder ? maxOrder.order + 1 : 0;
 
-  const trainApplication = await TrainApplication.create({
+  const newTrainingApplication = await TrainingApplication.create({
     company,
     position,
     location,
@@ -82,10 +82,10 @@ export async function createTrainApplication(
   });
 
   await Column.findByIdAndUpdate(columnId, {
-    $push: { trainApplications: trainApplication._id },
+    $push: { trainingApplications: newTrainingApplication._id },
   });
 
   revalidatePath("/dashboard");
 
-  return { data: JSON.parse(JSON.stringify(trainApplication)) };
+  return { data: JSON.parse(JSON.stringify(newTrainingApplication)) };
 }

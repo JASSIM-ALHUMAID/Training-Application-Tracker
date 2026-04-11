@@ -1,6 +1,6 @@
 "use client";
 
-import { Board, Column, trainApplications } from "@/lib/models/models.types";
+import { Board, Column, trainingApplications } from "@/lib/models/models.types";
 import React from "react";
 import {
   Calendar,
@@ -19,9 +19,8 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
-import CreateTrainApplicationDialog from "./CreateTrainApplicationDialog";
-import TrainApplication from "@/lib/models/train-application";
-import TrainApplicationCard from "./TrainApplicationCard";
+import TrainingApplicationCard from "./TrainingApplicationCard";
+import CreateTrainingApplicationDialog from "./CreateTrainingApplicationDialog";
 
 interface KanbanBoardProps {
   board: Board;
@@ -67,7 +66,7 @@ function DroppableColumn({
   sortedColumns: Column[];
 }) {
   const sortedApplications =
-    [...col.trainApplications].sort((a, b) => a.order - b.order) || [];
+    [...col.trainingApplications].sort((a, b) => a.order - b.order) || [];
 
   return (
     <Card className="min-w-[300px] shrink-0 shadow-md p-0">
@@ -109,7 +108,7 @@ function DroppableColumn({
             columns={sortedColumns}
           />
         ))}
-        <CreateTrainApplicationDialog columnId={col._id} boardId={boardId} />
+        <CreateTrainingApplicationDialog columnId={col._id} boardId={boardId} />
       </CardContent>
     </Card>
   );
@@ -119,12 +118,12 @@ function ApplicationCard({
   applications,
   columns,
 }: {
-  applications: trainApplications;
+  applications: trainingApplications;
   columns: Column[];
 }) {
   return (
     <div>
-      <TrainApplicationCard application={applications} columns={columns} />
+      <TrainingApplicationCard application={applications} columns={columns} />
     </div>
   );
 }

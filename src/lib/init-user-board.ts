@@ -17,7 +17,7 @@ export async function initializeUserBoard(userId: string) {
     await connectDB();
 
     // Check if board already exists
-    const existingBoard = await Board.findOne({ userId, name: "Train Hunt" });
+    const existingBoard = await Board.findOne({ userId, name: "Training Tracker" });
 
     if (existingBoard) {
       return existingBoard;
@@ -25,7 +25,7 @@ export async function initializeUserBoard(userId: string) {
 
     // Create the board
     const board = await Board.create({
-      name: "Train Hunt",
+      name: "Training Tracker",
       userId,
       columns: [],
     });
@@ -37,7 +37,7 @@ export async function initializeUserBoard(userId: string) {
           name: col.name,
           order: col.order,
           boardId: board._id,
-          trainApplications: [],
+          trainingApplications: [],
         }),
       ),
     );

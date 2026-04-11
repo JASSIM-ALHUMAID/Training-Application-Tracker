@@ -1,4 +1,4 @@
-export interface trainApplications {
+export interface trainingApplications {
   _id: string;
   company: string;
   position: string;
@@ -17,7 +17,7 @@ export interface Column {
   _id: string;
   name: string;
   order: number;
-  trainApplications: trainApplications[];
+  trainingApplications: trainingApplications[];
 }
 
 export interface Board {

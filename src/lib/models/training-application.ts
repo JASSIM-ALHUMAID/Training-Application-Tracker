@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
-export interface ITrainApplication extends Document {
+export interface ITrainingApplication extends Document {
   company: string;
   position: string;
   location?: string;
@@ -19,7 +19,7 @@ export interface ITrainApplication extends Document {
   updatedAt: Date;
 }
 
-const TrainApplicationSchema = new Schema<ITrainApplication>(
+const TrainingApplicationSchema = new Schema<ITrainingApplication>(
   {
     company: {
       type: String,
@@ -82,8 +82,11 @@ const TrainApplicationSchema = new Schema<ITrainApplication>(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export default mongoose.models.TrainApplication ||
-  mongoose.model<ITrainApplication>("TrainApplication", TrainApplicationSchema);
+export default mongoose.models.TrainingApplication ||
+  mongoose.model<ITrainingApplication>(
+    "TrainingApplication",
+    TrainingApplicationSchema,
+  );
