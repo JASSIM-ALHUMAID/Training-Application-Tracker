@@ -3,6 +3,7 @@
 import { getSession } from "@/lib/auth/auth";
 import connectDB from "../db";
 import { Board, Column, TrainApplication } from "../models";
+import { revalidatePath } from "next/cache";
 
 interface CreateTrainApplicationParams {
   company: string;
@@ -83,6 +84,8 @@ export async function createTrainApplication(
   await Column.findByIdAndUpdate(columnId, {
     $push: { trainApplications: trainApplication._id },
   });
+
+  revalidatePath("/dashboard");
 
   return { data: JSON.parse(JSON.stringify(trainApplication)) };
 }

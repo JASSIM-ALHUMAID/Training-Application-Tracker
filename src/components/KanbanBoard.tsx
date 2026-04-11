@@ -142,15 +142,13 @@ const KanbanBoard = ({ board, userId }: KanbanBoardProps) => {
             icon: <Calendar className="h-4 w-4" />,
           };
           return (
-            <>
-              <DroppableColumn
-                key={Key}
-                col={col}
-                config={config}
-                boardId={board._id}
-                sortedColumns={columns}
-              />
-            </>
+            <DroppableColumn
+              key={Key}
+              col={col}
+              config={config}
+              boardId={board._id}
+              sortedColumns={columns}
+            />
           );
         })}
       </div>
