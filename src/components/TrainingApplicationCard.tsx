@@ -21,7 +21,10 @@ import {
 import { Label } from "./ui/label";
 import { Input } from "./ui/input";
 import { Textarea } from "./ui/textarea";
-import { updateApplication } from "@/lib/actions/training-application";
+import {
+  updateApplication,
+  deleteTrainingApplication,
+} from "@/lib/actions/training-application";
 
 const TrainingApplicationCard = ({
   application,
@@ -70,9 +73,12 @@ const TrainingApplicationCard = ({
     }
   }
 
-  function handleDelete() {
-    // TODO: Implement delete logic
-    console.log("Deleting application");
+  async function handleDelete() {
+    try {
+      const result = await deleteTrainingApplication(application._id);
+    } catch (error) {
+      console.error("Error deleting application:", error);
+    }
   }
 
   return (

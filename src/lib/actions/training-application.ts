@@ -236,3 +236,29 @@ export async function updateApplication(
 
   return { data: JSON.parse(JSON.stringify(updated)) };
 }
+
+export async function deleteTrainingApplication(id: string) {
+  const session = await getSession();
+
+  if (!session) {
+    throw new Error("Unauthorized");
+  }
+  const applicationToDelete = await TrainingApplication.findById(id);
+
+  if (!applicationToDelete) {
+    throw new Error("Application not found");
+  }
+  if (applicationToDelete.userId !== session.user.id) {
+    throw new Error("Unauthorized");
+  }
+
+  await Column.findByIdAndUpdate(applicationToDelete.columnId, {
+    $pull: { trainingApplications: id },
+  });
+
+  await TrainingApplication.deleteOne({ _id: id });
+
+  revalidatePath("/dashboard");
+
+  return { success: true };
+}
