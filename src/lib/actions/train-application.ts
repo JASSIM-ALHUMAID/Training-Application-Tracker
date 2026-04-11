@@ -71,7 +71,7 @@ export async function createTrainApplication(
     salary,
     description,
     tags: tags || [],
-    trainingUrl,
+    jobUrl: trainingUrl,
     notes,
     columnId,
     boardId,

@@ -1,27 +1,43 @@
 import { Column, trainApplications } from "@/lib/models/models.types";
 import { Card, CardContent } from "./ui/card";
 import { ExternalLink } from "lucide-react";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from "./ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "./ui/dropdown-menu";
 import { Button } from "./ui/button";
-import { MoreVertical, Edit2, Trash2 } from "lucide-react";
+import { MoreVertical, Edit2, Trash2, Plus } from "lucide-react";
 import { useState } from "react";
-
+import {
+  Dialog,
+  DialogTrigger,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+  DialogFooter,
+} from "./ui/dialog";
+import { Label } from "./ui/label";
+import { Input } from "./ui/input";
+import { Textarea } from "./ui/textarea";
 
 function handleMove(columnId: string) {
   // TODO: Implement move logic
   console.log("Moving to column:", columnId);
 }
 
-function handleEdit() {
-  // TODO: Implement edit logic
-  console.log("Editing application");
+function handleSubmit(e: React.FormEvent) {
+  e.preventDefault();
+  // TODO: Implement submit logic
+  
 }
 
 function handleDelete() {
   // TODO: Implement delete logic
   console.log("Deleting application");
 }
-
 
 const TrainApplicationCard = ({
   application,
@@ -30,19 +46,28 @@ const TrainApplicationCard = ({
   application: trainApplications;
   columns: Column[];
 }) => {
-
   const [isEditing, setIsEditing] = useState(false);
-
+  const [formData, setFormData] = useState({
+    company: application.company,
+    position: application.position,
+    location: application.location || "",
+    notes: application.notes || "",
+    salary: application.salary || "",
+    jobUrl: application.jobUrl || "",
+    columnId: application.columnId || "",
+    tags: application.tags?.join(", ") || "",
+    description: application.description || "",
+  });
 
   return (
     <>
-      <Card
-        className="cursor-pointer transition-shadow hover:shadow-lg bg-white group shadow-sm"
-      >
+      <Card className="cursor-pointer transition-shadow hover:shadow-lg bg-white group shadow-sm">
         <CardContent className="p-4">
           <div className="flex items-start justify-between gap-2">
             <div className="flex-1 min-w-0">
-              <h3 className="font-semibold text-sm mb-1">{application.position}</h3>
+              <h3 className="font-semibold text-sm mb-1">
+                {application.position}
+              </h3>
               <p className="text-xs text-muted-foreground mb-2">
                 {application.company}
               </p>
@@ -113,6 +138,125 @@ const TrainApplicationCard = ({
           </div>
         </CardContent>
       </Card>
+
+      <Dialog open={isEditing} onOpenChange={setIsEditing}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Add Training Application</DialogTitle>
+            <DialogDescription>
+              Track a new training application
+            </DialogDescription>
+          </DialogHeader>
+          <form className="space-y-4" onSubmit={handleSubmit}>
+            <div className="space-y-4">
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="company">Company *</Label>
+                  <Input
+                    id="company"
+                    required
+                    value={formData.company}
+                    onChange={(e) =>
+                      setFormData({ ...formData, company: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="position">Position *</Label>
+                  <Input
+                    id="position"
+                    required
+                    value={formData.position}
+                    onChange={(e) =>
+                      setFormData({ ...formData, position: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location</Label>
+                  <Input
+                    id="location"
+                    value={formData.location}
+                    onChange={(e) =>
+                      setFormData({ ...formData, location: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="salary">Salary</Label>
+                  <Input
+                    id="salary"
+                    placeholder="e.g., 5000 SAR"
+                    value={formData.salary}
+                    onChange={(e) =>
+                      setFormData({ ...formData, salary: e.target.value })
+                    }
+                  />
+                </div>
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="trainingUrl">Training URL</Label>
+                <Input
+                  id="trainingUrl"
+                  type="url"
+                  placeholder="https://..."
+                  value={formData.jobUrl}
+                  onChange={(e) =>
+                    setFormData({ ...formData, jobUrl: e.target.value })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="tags">Tags (comma-separated)</Label>
+                <Input
+                  id="tags"
+                  placeholder="React, Tailwind, High Pay"
+                  value={formData.tags}
+                  onChange={(e) =>
+                    setFormData({ ...formData, tags: e.target.value })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="description">Description</Label>
+                <Textarea
+                  id="description"
+                  rows={3}
+                  placeholder="Brief description of the role..."
+                  value={formData.description}
+                  onChange={(e) =>
+                    setFormData({ ...formData, description: e.target.value })
+                  }
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="notes">Notes</Label>
+                <Textarea
+                  id="notes"
+                  rows={4}
+                  value={formData.notes}
+                  onChange={(e) =>
+                    setFormData({ ...formData, notes: e.target.value })
+                  }
+                />
+              </div>
+            </div>
+
+            <DialogFooter>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </Button>
+              <Button type="submit">Save Application</Button>
+            </DialogFooter>
+          </form>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };
