@@ -89,3 +89,52 @@ export async function createTrainingApplication(
 
   return { data: JSON.parse(JSON.stringify(newTrainingApplication)) };
 }
+
+export async function updateApplication(
+  id: string,
+  updates: {
+    company?: string;
+    position?: string;
+    location?: string;
+    salary?: string;
+    description?: string;
+    tags?: string[];
+    jobUrl?: string;
+    notes?: string;
+    order?: number;
+    columnId?: string;
+  },
+) {
+  const session = await getSession();
+
+  if (!session?.user?.id) {
+    return { error: "Unauthorized" };
+  }
+
+  await connectDB();
+
+  const trainingApplication = await TrainingApplication.findById(id);
+
+  if (!trainingApplication) {
+    return { error: "Training application not found" };
+  }
+  if (trainingApplication.userId !== session.user.id) {
+    return { error: "Unauthorized" };
+  }
+
+  const { columnId, order, ...otherUpdate } = updates;
+  const dataToUpdate: Partial<{
+    company: string;
+    position: string;
+    location: string;
+    salary: string;
+    description: string;
+    tags: string[];
+    jobUrl: string;
+    notes: string;
+    order: number;
+    columnId: string;
+  }> = otherUpdate;
+
+  return { success: true };
+}

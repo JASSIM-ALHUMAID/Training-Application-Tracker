@@ -21,6 +21,7 @@ import {
 import { Button } from "./ui/button";
 import TrainingApplicationCard from "./TrainingApplicationCard";
 import CreateTrainingApplicationDialog from "./CreateTrainingApplicationDialog";
+import { useBoard } from "@/lib/hooks/useBoard";
 
 interface KanbanBoardProps {
   board: Board;
@@ -129,7 +130,7 @@ function ApplicationCard({
 }
 
 const KanbanBoard = ({ board, userId }: KanbanBoardProps) => {
-  const columns = board.columns;
+  const { columns, moveApplication } = useBoard(board);
   const sortedColumns = [...columns].sort((a, b) => a.order - b.order);
 
   return (
