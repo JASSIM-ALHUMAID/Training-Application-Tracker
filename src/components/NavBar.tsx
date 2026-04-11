@@ -39,7 +39,7 @@ export default function NavBar() {
                 </Button>
               </Link>
               <DropdownMenu>
-                <DropdownMenuTrigger>
+                <DropdownMenuTrigger asChild>
                   <Avatar>
                     <AvatarFallback className="bg-primary text-white">
                       {session.user.name.charAt(0).toUpperCase()}
