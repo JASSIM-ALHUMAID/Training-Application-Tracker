@@ -1,36 +1,88 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Training Tracker
 
-## Getting Started
+Training Tracker is a small Kanban-style web app for organizing training applications. Each user gets a personal board with default pipeline columns and can create, edit, move, and delete application cards.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- Email/password sign-up and sign-in
+- Automatic per-user board creation
+- Default columns: `Wish List`, `Applied`, `Interviewing`, `Offer`, `Rejected`
+- Create, edit, move, and delete training application cards
+- Seed demo data for a specific user
+
+## Tech Stack
+
+- `Next.js 16`
+- `React 19`
+- `TypeScript`
+- `Tailwind CSS v4`
+- `shadcn/ui` and `Radix UI`
+- `better-auth`
+- `MongoDB` with `Mongoose`
+
+## Project Structure
+
+```text
+src/
+├── app/                  # App Router pages and auth API route
+├── components/           # UI and board components
+├── lib/
+│   ├── actions/          # Server actions for application CRUD
+│   ├── auth/             # better-auth server/client setup
+│   ├── hooks/            # Client-side board hook
+│   ├── models/           # Mongoose models and TS types
+│   ├── db.ts             # MongoDB connection helper
+│   └── init-user-board.ts
+├── proxy.ts              # Redirect logic for auth pages
+└── scripts/
+    └── seed.ts           # Demo data seed script
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Scripts
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+pnpm dev
+pnpm build
+pnpm start
+pnpm lint
+pnpm seed
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Seed Demo Data
 
-## Learn More
+The seed script inserts sample training applications into the default board for a specific user.
 
-To learn more about Next.js, take a look at the following resources:
+macOS/Linux:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+SEED_USER_ID=<your-user-id> pnpm seed
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+PowerShell:
 
-## Deploy on Vercel
+```powershell
+$env:SEED_USER_ID="<your-user-id>"
+pnpm seed
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The script also reads `MONGODB_URI` from `.env.local` because the command is defined as:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```json
+"seed": "tsx --env-file=.env.local src/scripts/seed.ts"
+```
+
+## Key Files
+
+- `src/app/page.tsx`
+- `src/app/dashboard/page.tsx`
+- `src/app/sign-in/page.tsx`
+- `src/app/sign-up/page.tsx`
+- `src/app/api/[...all]/route.ts`
+- `src/lib/auth/auth.ts`
+- `src/lib/auth/auth-client.ts`
+- `src/lib/init-user-board.ts`
+- `src/lib/actions/training-application.ts`
+- `src/lib/models/board.ts`
+- `src/lib/models/column.ts`
+- `src/lib/models/training-application.ts`
+- `src/scripts/seed.ts`

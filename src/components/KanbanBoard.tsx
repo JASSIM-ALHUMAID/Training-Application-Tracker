@@ -134,8 +134,8 @@ const KanbanBoard = ({ board, userId }: KanbanBoardProps) => {
   const sortedColumns = [...columns].sort((a, b) => a.order - b.order);
 
   return (
-    <div>
-      <div>
+    <div className="space-y-4">
+      <div className="flex gap-4 overflow-x-auto pb-4">
         {sortedColumns.map((col, Key) => {
           const config = COLUMN_CONFIG[Key] || {
             color: "bg-gray-500",
