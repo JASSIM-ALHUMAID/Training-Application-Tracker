@@ -4,8 +4,11 @@ import { MongoClient } from "mongodb";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { initializeUserBoard } from "../init-user-board";
+import dns from "dns";
 
-const client = new MongoClient(process.env.MONGODB_URI!);
+dns.setServers(["1.1.1.1", "8.8.8.8"]);
+
+const client = new MongoClient(process.env.mongo_noSrv!);
 const db = client.db();
 
 export const auth = betterAuth({
@@ -13,7 +16,7 @@ export const auth = betterAuth({
   session: {
     cookieCache: {
       enabled: true,
-      maxAge: 5 * 60, // 5 minutes
+      maxAge: 60 * 60, // 1 hour
     },
   },
   emailAndPassword: {
