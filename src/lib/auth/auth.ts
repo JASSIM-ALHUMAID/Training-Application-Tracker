@@ -4,11 +4,9 @@ import { MongoClient } from "mongodb";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { initializeUserBoard } from "../init-user-board";
-import dns from "dns";
 
-dns.setServers(["1.1.1.1", "8.8.8.8"]);
 
-const client = new MongoClient(process.env.mongo_noSrv!);
+const client = new MongoClient(process.env.mongo_noSrv);
 const db = client.db();
 
 export const auth = betterAuth({
